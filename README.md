@@ -1,6 +1,6 @@
 # CloudComputing
 
-<img src="https://github.com/TLazarevic/CloudComputing/blob/main/cloudcomputi.jpg" width="400" height="200">
+<img src="https://github.com/TLazarevic/CloudComputing/blob/main/cloudcomputi.jpg" width="450" height="250">
 
 Docker script:
 
