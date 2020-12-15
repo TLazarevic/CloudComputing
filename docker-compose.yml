@@ -1,19 +1,19 @@
-version: '2'
+version: '3'
 
-services:
-          
+services:     
   postgres:
     image: 'postgres:latest'
     container_name: postgres
     restart: on-failure
+    hostname: postgres
     networks:
       - cloud
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_USERNAME=postgres
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=maindb
+    volumes:
+      - database:/var/lib/postgresql/data
 
   app:
     image: 'docker-spring-boot-postgres:latest'
@@ -29,12 +29,13 @@ services:
       - DATABASE_PASSWORD=admin
       - DATABASE_DOMAIN=postgres
       - DATABASE_SCHEMA=maindb
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/maindb
     restart: on-failure
     tty: true
-    volumes:
-      - database:/var/lib/postgresql/data
     networks:
       - cloud
+    volumes:
+      - $HOME/.m2:/root/.m2
 volumes:
   database:
 networks:
