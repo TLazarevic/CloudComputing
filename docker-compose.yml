@@ -21,7 +21,7 @@ services:
       context: .
     container_name: app
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       - postgres
     environment:
@@ -36,6 +36,40 @@ services:
       - cloud
     volumes:
       - $HOME/.m2:/root/.m2
+
+  app2:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    container_name: app2
+    ports:
+      - "8082:8080"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=admin
+      - DATABASE_DOMAIN=postgres
+      - DATABASE_SCHEMA=maindb
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/maindb
+    restart: on-failure
+    tty: true
+    networks:
+      - cloud
+    volumes:
+      - $HOME/.m2:/root/.m2
+
+  nginx:
+    build: ./loadbalancing
+    container_name: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+      - app2
+    networks:
+      - cloud
+
 volumes:
   database:
 networks:
