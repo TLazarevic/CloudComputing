@@ -31,5 +31,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            user/app:latest
-            user/app:1.0.0
+            tashtash/cloud_computing:latest
