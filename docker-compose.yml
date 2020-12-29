@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:     
   postgres:
@@ -19,7 +19,7 @@ services:
     image: 'docker-spring-boot-postgres:latest'
     build:
       context: .
-    container_name: app
+    container_name: 'app'
     ports:
       - "8081:8080"
     depends_on:
@@ -42,10 +42,10 @@ services:
     container_name: nginx
     ports:
       - "81:80"
-    links:
-      - app
     depends_on:
       - app
+    networks:
+      - cloud
 
 volumes:
   database:
