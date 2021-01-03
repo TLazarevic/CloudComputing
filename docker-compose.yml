@@ -28,24 +28,14 @@ services:
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=admin
       - DATABASE_DOMAIN=postgres
+      - DATABASE_PORT=5432
       - DATABASE_SCHEMA=maindb
-      - DATABASE_URL=jdbc:postgresql://postgres:5432/maindb
     restart: on-failure
     tty: true
     networks:
       - cloud
     volumes:
       - $HOME/.m2:/root/.m2
-
-  nginx:
-    build: ./nginx
-    container_name: nginx
-    ports:
-      - "81:80"
-    depends_on:
-      - app
-    networks:
-      - cloud
 
 volumes:
   database:

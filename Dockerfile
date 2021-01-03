@@ -2,7 +2,7 @@ FROM maven:3.6.3-jdk-11-slim AS maven
 
 WORKDIR maven
 
-COPY demo/demo .
+COPY demo .
 
 RUN mvn package -DskipTests
 
