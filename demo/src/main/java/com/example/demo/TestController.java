@@ -1,6 +1,5 @@
 package com.example.demo;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,19 +17,24 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/test")
 public class TestController {
-	
+
 	@Autowired
 	CounterRepo repo;
- 
-	 @GetMapping(value = "/hm")
-    public String getTestData() {
-		List<Counter> counters = (List<Counter>) repo.findAll();
-		Counter c = counters.get(0);
-		Long number = c.getCounter();
-		number=number+1;
-		c.setCounter(number);
-		repo.save(c);
-		
-        return new String(number.toString());
-    }
+
+	@GetMapping(value = "/hm")
+	public String getTestData() {
+		try {
+			List<Counter> counters = (List<Counter>) repo.findAll();
+			Counter c = counters.get(0);
+			Long number = c.getCounter();
+			number = number + 1;
+			c.setCounter(number);
+			repo.save(c);
+
+			return new String(number.toString());
+		} catch (Exception e) {
+			repo.save(new Counter((long) 0));
+			return ("1");
+		}
+	}
 }

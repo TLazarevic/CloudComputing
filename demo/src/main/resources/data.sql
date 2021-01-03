@@ -1,1 +1,1 @@
-insert into counter(id,counter) values (1,0);
+insert into Counter(id,counter) values (1,0);
