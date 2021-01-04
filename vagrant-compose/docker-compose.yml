@@ -1,8 +1,8 @@
-version: '3'
+version: "3"
 
-services:     
+services:
   postgres:
-    image: 'postgres:latest'
+    image: "postgres:latest"
     container_name: postgres
     restart: on-failure
     hostname: postgres
@@ -15,16 +15,65 @@ services:
     volumes:
       - database:/var/lib/postgresql/data
 
-  app:
-    image: 'docker-spring-boot-postgres:latest'
+  postgres2:
+    image: "postgres:latest"
+    container_name: postgres2
+    restart: on-failure
+    hostname: postgres
+    networks:
+      - cloud
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=maindb2
+    volumes:
+      - database2:/var/lib/postgresql/data
+
+  app2:
+    image: "docker-spring-boot-postgres:latest"
     build:
       context: .
-    container_name: 'app'
+    container_name: "app2"
+    ports:
+      - "8082:8080"
+    depends_on:
+      - postgres2
+    environment:
+      - APP_NAME=app2
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=admin
+      - DATABASE_DOMAIN=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_SCHEMA=maindb2
+    restart: on-failure
+    tty: true
+    networks:
+      - cloud
+    volumes:
+      - $HOME/.m2:/root/.m2
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+      - app2
+    networks:
+      - cloud
+
+  app:
+    image: "docker-spring-boot-postgres:latest"
+    build:
+      context: .
+    container_name: "app"
     ports:
       - "8081:8080"
     depends_on:
       - postgres
     environment:
+      - APP_NAME=app1
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=admin
       - DATABASE_DOMAIN=postgres
@@ -39,6 +88,7 @@ services:
 
 volumes:
   database:
+  database2:
 networks:
   cloud:
     name: cloud

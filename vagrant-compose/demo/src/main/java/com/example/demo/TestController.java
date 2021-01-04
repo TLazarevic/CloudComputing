@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repo.CounterRepo;
 import com.example.demo.data.Counter;
-import java.util.List;
 
-//http://localhost:8080/test/hm --> putanja, samo stigne json za sad
+import java.util.List;
+import java.util.Map;
+
+//http://localhost:8080/test/hm
 @RestController
 @RequestMapping(value = "/test")
 public class TestController {
@@ -23,6 +25,7 @@ public class TestController {
 
 	@GetMapping(value = "/hm")
 	public String getTestData() {
+		Map<String, String> env = System.getenv();
 		try {
 			List<Counter> counters = (List<Counter>) repo.findAll();
 			Counter c = counters.get(0);
@@ -31,10 +34,10 @@ public class TestController {
 			c.setCounter(number);
 			repo.save(c);
 
-			return new String(number.toString());
+			return new String(number.toString()+" "+env.get("APP_NAME"));
 		} catch (Exception e) {
 			repo.save(new Counter((long) 0));
-			return ("1");
+			return ("1"+" "+env.get("APP_NAME"));
 		}
 	}
 }
