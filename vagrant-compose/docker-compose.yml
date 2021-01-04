@@ -42,7 +42,7 @@ services:
       - APP_NAME=app2
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=admin
-      - DATABASE_DOMAIN=postgres
+      - DATABASE_DOMAIN=postgres2
       - DATABASE_PORT=5432
       - DATABASE_SCHEMA=maindb2
     restart: on-failure
