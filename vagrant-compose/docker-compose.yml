@@ -30,9 +30,7 @@ services:
       - database2:/var/lib/postgresql/data
 
   app2:
-    image: "docker-spring-boot-postgres:latest"
-    build:
-      context: .
+    image: "tashtash/cloud_computing"
     container_name: "app2"
     ports:
       - "8082:8080"
